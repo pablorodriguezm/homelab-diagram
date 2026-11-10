@@ -8,7 +8,6 @@ are already in icons/.
 Usage: python3 fetch_icons.py
 """
 import pathlib
-import shutil
 import time
 import urllib.request
 
@@ -22,27 +21,17 @@ SOURCES = [
 
 # local file name (as used in inventory.yaml / build.py) -> dashboard-icons name
 ICON_MAP = {
-    "actual": "actual-budget", "adguard": "adguard-home", "alloy": "alloy", "android": "android",
-    "authentik": "authentik", "backblaze": "backblaze", "bazarr": "bazarr", "cinny": "cinny",
-    "cloudflare": "cloudflare", "crowdsec": "crowdsec", "discord": "discord", "docker": "docker",
-    "esphome": "esphome", "forgejo": "forgejo", "fritzbox": "fritzbox", "grafana": "grafana",
-    "homeassistant": "home-assistant", "immich": "immich", "jellyfin": "jellyfin",
-    "jellystat": "jellystat", "jetkvm": "jetkvm", "loki": "loki", "matrix-l": "matrix-light",
-    "matter-l": "matter-light", "metube": "metube", "mikrotik-l": "mikrotik-light",
-    "mosquitto": "mosquitto", "openspeedtest": "openspeedtest", "openwebui-l": "open-webui-light",
-    "opnsense": "opnsense", "paperless": "paperless-ngx", "pelican": "pelican-panel",
-    "penpot-l": "penpot-light", "prometheus": "prometheus", "prowlarr": "prowlarr",
-    "proxmox": "proxmox", "qbittorrent": "qbittorrent", "radarr": "radarr", "seerr": "seerr",
-    "signal": "signal", "sonarr": "sonarr", "stirling": "stirling-pdf", "tandoor": "tandoor-recipes",
-    "traefik": "traefik", "truenas": "truenas-scale", "unifi": "unifi", "whatsapp": "whatsapp",
-    "windows": "microsoft-windows", "wireguard": "wireguard", "zigbee2mqtt": "zigbee2mqtt",
+    "unifi": "unifi", "homeassistant": "home-assistant", "raspberrypi": "raspberry-pi",
+    "synology": "synology-dsm", "casaos": "casaos", "dell": "dell-light", "apple": "apple-light",
+    "shelly": "shelly", "teslamate": "teslamate", "portainer": "portainer", "pihole": "pi-hole",
+    "immich": "immich", "freshrss": "freshrss", "karakeep": "karakeep", "outline-l": "outline-light",
+    "bentopdf": "bentopdf", "meilisearch": "meilisearch", "postgres": "postgresql", "redis": "redis",
+    "chrome": "google-chrome", "grafana": "grafana", "mosquitto": "mosquitto", "jetkvm": "jetkvm",
+    "docker": "docker", "plex": "plex", "wireguard": "wireguard", "hp": "hp",
 }
 
 # dark icons without a light variant: recolor them for the dark background
-RECOLOR = {
-    "ollama-l": ("ollama", 'fill="black"', 'fill="#e6edf3"'),
-    "thread-l": ("thread", 'fill="#464646"', 'fill="#e6edf3"'),
-}
+RECOLOR = {}
 
 
 def download(name, tries=3):
@@ -77,15 +66,6 @@ def main():
         except Exception as e:
             failed.append(f"{local} ({remote}): {e}")
 
-    # CachyOS has no icon in dashboard-icons: use the one a CachyOS install ships, else the Arch logo
-    system_logo = pathlib.Path("/usr/share/icons/cachyos.svg")
-    try:
-        if system_logo.exists():
-            shutil.copy(system_logo, ICONS / "cachyos.svg")
-        else:
-            (ICONS / "cachyos.svg").write_text(download("arch-linux"))
-    except Exception as e:
-        failed.append(f"cachyos: {e}")
 
     print(f"icons in {ICONS}: {len(list(ICONS.glob('*.svg')))}")
     if failed:

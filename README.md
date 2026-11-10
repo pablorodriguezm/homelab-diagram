@@ -10,6 +10,26 @@ The script behind the network diagram of my homelab that I posted on r/homelab. 
 > [!NOTE]
 > **The code was written by AI.** I built this together with Claude (Anthropic) in Claude Code. I described what I wanted and gave feedback on every render, Claude wrote and changed the code. A few example prompts are at the end of this README.
 
+## Esta versión (UniFi + ZimaOS + Synology)
+
+Este fork está adaptado a mi red: UCG Ultra, USW-Lite-16-PoE + USW Flex, U6 Enterprise IW,
+ZimaOS (Alienware Aurora R5) con Docker y un Synology DS1515+ con DX513.
+Render público: [`docs/homelab.png`](docs/homelab.png) · vectorial: [`docs/homelab.pdf`](docs/homelab.pdf).
+
+**Datos privados:** el `inventory.yaml` del repo es una versión **redactada** (sin puertos externos,
+versiones exactas ni nombres personales). Los datos reales van en `inventory.local.yaml`, que está
+en `.gitignore` y nunca se sube. Si ese fichero existe, `build.py` lo usa automáticamente.
+
+```bash
+python3 fetch_icons.py             # una vez: descarga los iconos a icons/
+python3 build.py --hq              # versión real → out/homelab.png, out/homelab-hq.png (9600 px), out/homelab.pdf
+python3 build.py --public --hq     # versión pública redactada → out/homelab-public.*
+```
+
+Para cambiar algo, edita `inventory.local.yaml` (y, si quieres que se vea en el repo, la versión
+redactada en `inventory.yaml`). Lo que cambia de posición (cajas, cables) está en `build.py`.
+Antes de subir un render a `docs/`, genera siempre el de `--public`.
+
 ## What it shows
 
 - the path from the internet through the ISP router (with its real ports) and the firewall to the core switch
